@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class FTCAGameManager : MonoBehaviour
 {
     [Header("Managers")]
     [SerializeField] QuizManager quizManager;
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     }
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainMenu");
     }
-   
+
 }
