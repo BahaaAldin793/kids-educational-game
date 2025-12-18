@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a1bf329d24a3404eae7539425f85844, type: 3}
+  m_Name: CharacterDatabase
+  m_EditorClassIdentifier: 
+  characters:
+  - characterName: Red
+    characterPrefab: {fileID: 7322479139939081348, guid: c07074e48cf47294a9a374abadec97f9, type: 3}
+  - characterName: Orange
+    characterPrefab: {fileID: 7865592226323995479, guid: 473b79182d8e572458be199a15569877, type: 3}
+  - characterName: Pink
+    characterPrefab: {fileID: 4276338732681686867, guid: db8f573b4566d224fb38512598b74c69, type: 3}
+  - characterName: SkyBlue
+    characterPrefab: {fileID: 77304507441517234, guid: 2d7d0621b92cbe446a36b285678233e0, type: 3}
+  - characterName: Yellow
+    characterPrefab: {fileID: 3052804910489703159, guid: 0707f5a3288b22a44b03733850a09a24, type: 3}
+  - characterName: Grey
+    characterPrefab: {fileID: 4839231315209424966, guid: 49622bd0ff4d2d64f8c58f80ce27f0de, type: 3}
+  - characterName: Black
+    characterPrefab: {fileID: 330072026096399867, guid: 99e8040812d694648b0c352f77b6c95f, type: 3}

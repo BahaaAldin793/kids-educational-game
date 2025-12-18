@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - plane
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Backgroound
+    uniqueID: 1744678733
+    locked: 1
+  - name: Character
+    uniqueID: 3647302541
     locked: 0

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "459268642072",
+    "project_id": "kids-educational-game-f5c24",
+    "storage_bucket": "kids-educational-game-f5c24.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459268642072:android:d5e0c4a7683a2f10f7fa6d",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.kidseducationalgame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT4mqlrKX7yJJzcTE-Ws1-_2kZI0vbhbE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
