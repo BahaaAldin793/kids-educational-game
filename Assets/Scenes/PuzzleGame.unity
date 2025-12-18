@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 81440407}
   - component: {fileID: 81440406}
   - component: {fileID: 81440405}
+  - component: {fileID: 81440408}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -315,6 +316,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &81440408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81440404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4644022876144048a40c7329c0cd418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 0}
+  soundIconOn: {fileID: 0}
+  soundIconOff: {fileID: 0}
+  sfxSource: {fileID: 81440406}
+  snapClip: {fileID: 8300000, guid: 3fdaaf9ad51ef034784406bf68369308, type: 3}
+  winClip: {fileID: 8300000, guid: 496c70ed0e720e0459bf1aecb0a20071, type: 3}
 --- !u!1 &112713469
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,7 +896,6 @@ GameObject:
   m_Component:
   - component: {fileID: 626813118}
   - component: {fileID: 626813117}
-  - component: {fileID: 626813116}
   m_Layer: 0
   m_Name: FixedBackground
   m_TagString: Untagged
@@ -885,18 +903,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &626813116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626813115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f28bc90a08c912d4f863c7a5333b2747, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &626813117
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2560,7 +2566,7 @@ MonoBehaviour:
   timerManager: {fileID: 2125969400}
   starRatingManager: {fileID: 23138772}
   hintManager: {fileID: 1971182463}
-  soundManager: {fileID: 81440405}
+  soundManager: {fileID: 81440408}
 --- !u!4 &1784336517
 Transform:
   m_ObjectHideFlags: 0

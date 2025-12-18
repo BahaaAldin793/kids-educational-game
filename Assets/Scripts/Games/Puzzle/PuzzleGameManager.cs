@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class PuzzleGameManager : MonoBehaviour
 {
     [Header("Game Elements")]
     [Range(2, 6)]
