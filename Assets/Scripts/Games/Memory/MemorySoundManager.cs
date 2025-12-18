@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class SoundManager : MonoBehaviour
+public class MemorySoundManager : MonoBehaviour
 {
     [Header("Audio Clips")]
     [SerializeField] private AudioClip snapSound;

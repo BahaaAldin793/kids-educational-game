@@ -1,82 +1,169 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
+    public static SoundManager Instance { get; private set; }
+
     [Header("UI Elements")]
-    [SerializeField] Slider volumeSlider;
-    [SerializeField] Image soundIconOn;
-    [SerializeField] Image soundIconOff;
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Image soundIconOn;
+    [SerializeField] private Image soundIconOff;
+
+    [Header("Game SFX (Puzzle)")]
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioClip snapClip;
+    [SerializeField] private AudioClip winClip;
 
     private bool muted = false;
     private float previousVolume = 1f;
 
-    void Start()
+    private const string VolumePrefKey = "volume";
+    private const string MutedPrefKey = "muted";
+
+    private void Awake()
     {
-        if (!PlayerPrefs.HasKey("volume"))
+        // Singleton (safe if you only have 1 SoundManager in the game)
+        if (Instance != null && Instance != this)
         {
-            PlayerPrefs.SetFloat("volume", 1f);
+            Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        // Ensure we have an AudioSource for SFX if present on same GO
+        if (sfxSource == null)
+            sfxSource = GetComponent<AudioSource>();
 
         Load();
 
-        // التأكد من ضبط الأيقونة والصوت عند بداية اللعبة
-        OnSliderChange();
+        // Apply loaded state to audio + UI
+        ApplyVolume(volumeSlider != null ? volumeSlider.value : 1f, save: false);
+        ApplyMute(muted, save: false);
+
+        if (volumeSlider != null)
+        {
+            volumeSlider.onValueChanged.RemoveListener(OnVolumeChanged);
+            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+        }
+
+        UpdateIcons();
     }
 
-    public void OnButtonPress()
+    private void OnDestroy()
     {
-        if (muted == false)
+        if (volumeSlider != null)
+            volumeSlider.onValueChanged.RemoveListener(OnVolumeChanged);
+    }
+
+    // ===== UI Volume / Mute =====
+
+    private void OnVolumeChanged(float value)
+    {
+        // If user drags volume up while muted, auto-unmute
+        if (muted && value > 0.0001f)
+            ApplyMute(false, save: true);
+
+        ApplyVolume(value, save: true);
+        UpdateIcons();
+    }
+
+    public void ToggleMute()
+    {
+        ApplyMute(!muted, save: true);
+        UpdateIcons();
+    }
+
+    private void ApplyVolume(float value, bool save)
+    {
+        AudioListener.volume = Mathf.Clamp01(value);
+
+        // Track last non-zero volume for restoring after unmute
+        if (AudioListener.volume > 0.0001f)
+            previousVolume = AudioListener.volume;
+
+        if (save)
+            Save();
+    }
+
+    private void ApplyMute(bool isMuted, bool save)
+    {
+        muted = isMuted;
+
+        if (muted)
         {
-            // تفعيل الكتم
-            muted = true;
-            previousVolume = volumeSlider.value;
-            volumeSlider.value = 0;
+            // store current volume to restore later
+            previousVolume = (volumeSlider != null) ? volumeSlider.value : AudioListener.volume;
+
+            AudioListener.volume = 0f;
+            if (volumeSlider != null) volumeSlider.value = 0f;
         }
         else
         {
-            // إلغاء الكتم
-            muted = false;
-            // لو القيمة السابقة كانت صفر (يعني كان مكتوم)، نرجعه للنص مثلاً أو 1
-            volumeSlider.value = previousVolume > 0 ? previousVolume : 1f;
+            // restore volume
+            float restore = previousVolume <= 0.0001f ? 1f : previousVolume;
+            AudioListener.volume = restore;
+            if (volumeSlider != null) volumeSlider.value = restore;
         }
 
-        // أهم سطر: لازم ننادي الدالة دي عشان تطبق التغيير فعلياً
-        OnSliderChange();
+        if (save)
+            Save();
     }
 
-    // دي الدالة اللي بتتحكم في كل حاجة (الصوت والأيقونة)
-    public void OnSliderChange()
+    private void UpdateIcons()
     {
-        // 1. تغيير الصوت الفعلي
-        AudioListener.volume = volumeSlider.value;
+        bool isOn = !muted && AudioListener.volume > 0.0001f;
 
-        // 2. التحكم في الأيقونة بناءً على مكان السلايدر
-        if (volumeSlider.value <= 0.001f) // استخدام رقم صغير جدا بدل الصفر عشان الدقة
-        {
-            muted = true;
-            soundIconOn.enabled = false;
-            soundIconOff.enabled = true;
-        }
-        else
-        {
-            muted = false;
-            soundIconOn.enabled = true;
-            soundIconOff.enabled = false;
-        }
-
-        Save();
+        if (soundIconOn != null) soundIconOn.enabled = isOn;
+        if (soundIconOff != null) soundIconOff.enabled = !isOn;
     }
 
     private void Load()
     {
-        volumeSlider.value = PlayerPrefs.GetFloat("volume", 1f);
+        float vol = PlayerPrefs.GetFloat(VolumePrefKey, 1f);
+        muted = PlayerPrefs.GetInt(MutedPrefKey, 0) == 1;
+
+        if (volumeSlider != null)
+            volumeSlider.value = Mathf.Clamp01(vol);
+
+        previousVolume = Mathf.Clamp01(vol);
     }
 
     private void Save()
     {
-        PlayerPrefs.SetFloat("volume", volumeSlider.value);
+        float vol = (volumeSlider != null) ? volumeSlider.value : AudioListener.volume;
+
+        PlayerPrefs.SetFloat(VolumePrefKey, Mathf.Clamp01(vol));
+        PlayerPrefs.SetInt(MutedPrefKey, muted ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    // ===== Puzzle SFX API (called by Puzzle GameManager) =====
+
+    public void PlaySnapSound()
+    {
+        PlayOneShot(snapClip);
+    }
+
+    public void PlayWinSound()
+    {
+        PlayOneShot(winClip);
+    }
+
+    private void PlayOneShot(AudioClip clip)
+    {
+        // Respect mute state
+        if (muted || AudioListener.volume <= 0.0001f)
+            return;
+
+        if (clip == null || sfxSource == null)
+            return;
+
+        sfxSource.PlayOneShot(clip);
     }
 }

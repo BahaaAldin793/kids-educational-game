@@ -546,7 +546,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2146535720}
         m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: OnButtonPress
+        m_MethodName: ToggleMute
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4625,6 +4625,9 @@ MonoBehaviour:
   volumeSlider: {fileID: 1114166295}
   soundIconOn: {fileID: 859299398}
   soundIconOff: {fileID: 1237389670}
+  sfxSource: {fileID: 0}
+  snapClip: {fileID: 0}
+  winClip: {fileID: 0}
 --- !u!4 &2146535721
 Transform:
   m_ObjectHideFlags: 0
